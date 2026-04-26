@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-generate_lofi_runpod_clean.py
-=============================
+generate.py
+===========
 Cleaner ACE-Step 1.5 lofi generator for RunPod.
 Imports prompts from prompts.py so musical content can be
 managed separately from generation logic.

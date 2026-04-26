@@ -41,6 +41,15 @@ PROMPT_PACKS: Dict[str, List[str]] = {
         f"classic lofi beat, 76 BPM, piano chord loop, boom bap drums, warm bass, repetitive structure, simple melody, relaxed groove, balanced mix, slightly softened highs, {_TEXTURE_WARM}, {_RHYTHM_LOCK}, not overly processed"
     ],
 
+    # ── Gold Standard Lofi ────────────────────────────────────────────────────
+"gold_standard_lofi": [
+    "classic lofi hip hop instrumental, 78 BPM, dusty boom bap drums with soft swing, sampled jazz piano chords with tape saturation and slight pitch wobble, warm sub bass with subtle movement, cassette texture, vinyl crackle very low in the background, analog warmth, degraded tape tone, natural velocity variation, slightly imperfect note articulation, intimate room ambience, stable rhythmic grid, tight pocket, no timing drift, feels like a recorded beat tape, not digitally sequenced, no bright highs, no clean digital sound",
+
+    "nostalgic lofi beat tape, 82 BPM, chopped soul sample with worn tape character, boom bap drums with soft transients and light swing, deep warm bass, analog compression, subtle wow and flutter, low fidelity texture, slightly degraded highs, organic feel, not digitally clean, stable timing, no drift",
+
+    "underground lofi hip hop, 76 BPM, dusty MPC style drums, vinyl sampled chords with gentle noise and tape warmth, mellow bassline, soft clipping on peaks, cassette saturation, muted highs, warm low mids, small timing imperfections but locked tempo, raw beat tape character, not polished, not synthetic"
+    ],
+
     # ✅ Slightly dirtier version but still controlled
     "traditional_adlibs": [
         f"classic lofi hip hop, 85 BPM, dusty boom bap drums, vinyl texture low in mix, sampled jazz chords with warmth, deep bass, subtle vocal chops low volume, {_TEXTURE_WARM}, {_TEXTURE_ROOM}, {_RHYTHM_LOCK}, no lyrics",
