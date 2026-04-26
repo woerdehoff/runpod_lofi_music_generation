@@ -35,9 +35,12 @@ _ARRANGEMENT = (
 
 PROMPT_PACKS: Dict[str, List[str]] = {
     "gold_standard_lofi": [
-        f"classic lofi hip hop instrumental, 78 BPM, dusty boom bap drums, sampled jazz piano chords, warm sub bass, cassette bloom, barely audible vinyl texture, intimate late-night mood, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
-        f"nostalgic beat tape lofi, 82 BPM, chopped soul harmony, soft kick and snare, mellow bassline, tape wobble, worn sample edges, cozy apartment ambience, understated melodic phrasing, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
-        f"underground lofi instrumental, 76 BPM, dusty MPC-style drums, mellow electric piano voicings, round bass, soft clipping on peaks, muted cymbals, raw but musical beat-tape character, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"classic crate-dug lofi hip hop instrumental, 78 BPM, dusty boom bap drums, sampled jazz piano chords, warm sub bass, cassette bloom, barely audible vinyl texture, intimate late-night mood, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"nostalgic soul-sample lofi, 82 BPM, chopped harmony, soft kick and snare, mellow bassline, tape wobble, worn sample edges, cozy apartment ambience, understated melodic phrasing, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"guitar-led dusk lofi instrumental, 74 BPM, muted jazz guitar chords instead of dominant piano, soft boom bap pocket, round bass, tiny room reflections, hazy city-night mood, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"rhodes-and-vibes lofi instrumental, 80 BPM, Rhodes harmony with soft vibraphone accents, light dusty drums, supportive bass, gentle tape smear, reflective and spacious but restrained, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"cassette synth lofi instrumental, 72 BPM, detuned analog keys, sleepy drum machine groove, warm bass pillow, blurred tape hiss, overcast dawn atmosphere, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"underground sampler lofi instrumental, 76 BPM, dusty MPC-style drums, clipped sample fragments, upright-style bass movement, muted cymbals, raw but musical beat-tape character, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
     ],
     "clean_lofi_hiphop": [
         f"clean lofi hip hop instrumental, 80 BPM, warm Rhodes chords, gentle boom bap drums, deep supportive bass, minimal top line, focused study mood, polished but not glossy, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
@@ -62,8 +65,10 @@ PROMPT_PACKS: Dict[str, List[str]] = {
     "quality_rotate": [
         f"classic lofi hip hop instrumental, 78 BPM, dusty boom bap drums, sampled jazz piano, warm sub bass, beat-tape feel, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
         f"focus lofi instrumental, 76 BPM, soft Rhodes, minimal drum pocket, supportive bass, unobtrusive study energy, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
-        f"jazzy cafe chillhop instrumental, 82 BPM, guitar or Rhodes chords, brushed drums, warm bass, intimate room tone, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"jazzy cafe chillhop instrumental, 82 BPM, guitar-led harmony, brushed drums, warm bass, intimate room tone, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
         f"rain-soaked lofi instrumental, 72 BPM, mellow piano, soft drums, deep bass, blurred tape mood, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"sleepy cassette synthhop instrumental, 74 BPM, detuned analog keys, dry drums, thick bass cushion, faded-tape atmosphere, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"night bus lofi instrumental, 84 BPM, plucked electric keys, tighter kick-snare pocket, warm bass, close dry room tone, restrained urban motion, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
     ],
 }
 

@@ -21,6 +21,9 @@ import time
 from pathlib import Path
 from typing import Dict, List, Optional
 
+# Initialize random seed from system entropy for true randomness across runs
+random.seed()
+
 try:
     import toml
 except ImportError:
@@ -51,6 +54,76 @@ DEFAULT_GUIDANCE = 4.5
 DEFAULT_SHIFT = 1.55
 DEFAULT_TRACKS = 10
 INSTRUCTION_TXT = REPO_DIR / "instruction.txt"
+DEFAULT_THINKING = False
+
+TRACK_PROFILES = [
+    {
+        "name": "crate_dug_piano",
+        "brief": "hard constraint: foreground dusty sampled piano chords and boom bap drums, no guitar-led arrangement, no synth lead, no brushed-jazz swing",
+        "steps": 106,
+        "guidance": 4.9,
+        "shift": 1.42,
+    },
+    {
+        "name": "rain_piano_haze",
+        "brief": "hard constraint: foreground rainy piano atmosphere and soft drums, no guitar-led arrangement, no vibraphone accents, no punchy dry drums",
+        "steps": 88,
+        "guidance": 4.05,
+        "shift": 1.72,
+    },
+    {
+        "name": "jazz_guitar_room",
+        "brief": "hard constraint: foreground muted jazz guitar, brushed drums, upright-style bass, avoid dominant piano loop, avoid synth textures",
+        "steps": 102,
+        "guidance": 4.7,
+        "shift": 1.36,
+    },
+    {
+        "name": "cassette_synth_sleep",
+        "brief": "hard constraint: foreground detuned analog keys and drum machine groove, avoid jazz piano, avoid brushed acoustic drums, avoid guitar comping",
+        "steps": 84,
+        "guidance": 3.95,
+        "shift": 1.78,
+    },
+    {
+        "name": "dry_night_bus",
+        "brief": "hard constraint: foreground plucked electric keys and dry close drums, tighter urban pulse, avoid rain ambience, avoid lush washed textures",
+        "steps": 94,
+        "guidance": 4.6,
+        "shift": 1.3,
+    },
+    {
+        "name": "rhodes_vibes_float",
+        "brief": "hard constraint: foreground Rhodes harmony and sparse vibraphone accents, light drums, airy space, avoid boom bap heaviness, avoid guitar lead",
+        "steps": 98,
+        "guidance": 4.25,
+        "shift": 1.6,
+    },
+]
+
+TRACK_STYLE_VARIANTS = [
+    "lean into swung boom bap drums, sampled-chord phrasing, and a distinctly human pocket",
+    "favor brushed drums, jazz-club voicings, and a more acoustic low end",
+    "use electric piano as the anchor with minimal melodic movement and a heavy sleepiness",
+    "center the groove around guitar or plucked harmony instead of dominant piano loops",
+    "push toward woozy tape color, blurred transients, and a rainy-window atmosphere",
+    "keep the beat dry and intimate with closer drums and less wash in the ambience",
+    "favor upright-style bass movement, soft room reflections, and understated jazz harmony",
+    "lean into cassette wobble, sampler grit, and a more beat-tape sketchbook feel",
+]
+
+CANDIDATE_STYLE_VARIANTS = [
+    "avoid obvious hook melodies and prioritize texture plus pocket",
+    "favor sparse arrangement with longer held chords and less note density",
+    "favor chopped harmonic fragments and a slightly rougher sampler texture",
+    "favor warmer bass presence and softer drum attack with fewer cymbal details",
+    "favor a small-room presentation with dry drums and restrained ambience",
+    "favor washed ambience, tape haze, and gentler transient edges",
+]
+
+GUIDANCE_OFFSETS = [-1.2, -0.7, -0.3, 0.3, 0.7, 1.2]
+SHIFT_OFFSETS = [-0.25, -0.15, -0.05, 0.05, 0.15, 0.25]
+STEP_OFFSETS = [-20, -12, -6, 6, 12, 20]
 
 DASH_LINE = "-" * 72
 EQ_LINE = "=" * 72
@@ -106,8 +179,8 @@ def write_track_toml(
         "seed": seed,
         "thinking": thinking,
         "use_cot_metas": thinking,
-        "use_cot_caption": False,
-        "use_cot_language": False,
+        "use_cot_caption": thinking,
+        "use_cot_language": thinking,
         "batch_size": 1,
         "audio_format": "flac",
         "use_random_seed": seed < 0,
@@ -228,6 +301,37 @@ def format_db(value: Optional[float]) -> str:
     return f"{value:.1f} dB"
 
 
+def build_candidate_prompt(base_prompt: str, track_num: int, candidate_num: int) -> str:
+    track_profile = random.choice(TRACK_PROFILES)
+    track_variant = random.choice(TRACK_STYLE_VARIANTS)
+    candidate_variant = random.choice(CANDIDATE_STYLE_VARIANTS)
+    return (
+        f"{base_prompt}, lane: {track_profile['name']}, {track_profile['brief']}, "
+        f"variation brief: {track_variant}, {candidate_variant}"
+    )
+
+
+def vary_generation_settings(
+    steps: int,
+    guidance: float,
+    shift: float,
+    track_num: int,
+    candidate_num: int,
+) -> Dict[str, float]:
+    track_profile = random.choice(TRACK_PROFILES)
+    step_offset = random.choice(STEP_OFFSETS)
+    guidance_offset = random.choice(GUIDANCE_OFFSETS)
+    shift_offset = random.choice(SHIFT_OFFSETS)
+    return {
+        "steps": max(60, int(track_profile["steps"]) + step_offset),
+        "guidance": round(
+            min(6.0, max(3.2, float(track_profile["guidance"]) + guidance_offset)),
+            2,
+        ),
+        "shift": round(min(1.9, max(1.15, float(track_profile["shift"]) + shift_offset)), 2),
+    }
+
+
 def generate_candidate(
     track_num: int,
     total_tracks: int,
@@ -245,12 +349,17 @@ def generate_candidate(
     track_path = candidate_dir(track_num, candidate_num, total_candidates)
     seed = resolve_seed(seed_base, track_num, candidate_num)
     existing = find_output_audio(track_path)
+    effective_prompt = build_candidate_prompt(prompt, track_num, candidate_num)
+    tuned_settings = vary_generation_settings(steps, guidance, shift, track_num, candidate_num)
 
     print("")
     print(DASH_LINE)
     print(f"Track {track_num + 1}/{total_tracks} | Candidate {candidate_num + 1}/{total_candidates}")
-    print(f"Prompt   : {prompt[:110]}...")
-    print(f"Settings : duration={duration}s steps={steps} guidance={guidance} shift={shift} seed={seed}")
+    print(f"Prompt   : {effective_prompt[:110]}...")
+    print(
+        f"Settings : duration={duration}s steps={tuned_settings['steps']} guidance={tuned_settings['guidance']} "
+        f"shift={tuned_settings['shift']} seed={seed}"
+    )
     print(DASH_LINE)
 
     if resume_existing and existing and existing.stat().st_size > 100_000:
@@ -261,6 +370,7 @@ def generate_candidate(
         return {
             "candidate_index": candidate_num,
             "seed": seed,
+            "prompt": effective_prompt,
             "audio_path": existing,
             "stats": stats,
             "reused": True,
@@ -268,11 +378,11 @@ def generate_candidate(
 
     toml_path = write_track_toml(
         track_dir=track_path,
-        prompt=prompt,
+        prompt=effective_prompt,
         duration=duration,
-        steps=steps,
-        guidance=guidance,
-        shift=shift,
+        steps=int(tuned_settings["steps"]),
+        guidance=float(tuned_settings["guidance"]),
+        shift=float(tuned_settings["shift"]),
         seed=seed,
         thinking=thinking,
     )
@@ -310,6 +420,7 @@ def generate_candidate(
     return {
         "candidate_index": candidate_num,
         "seed": seed,
+        "prompt": effective_prompt,
         "audio_path": audio_path,
         "stats": stats,
         "reused": False,
@@ -473,7 +584,12 @@ def main() -> None:
     )
     parser.add_argument("--shift", type=float, default=DEFAULT_SHIFT, help=f"Noise shift (default: {DEFAULT_SHIFT})")
     parser.add_argument("--seed-base", type=int, default=-1, help="Base seed, -1 for random per candidate")
-    parser.add_argument("--thinking", action="store_true", help="Enable ACE-Step thinking/reasoning")
+    parser.add_argument(
+        "--thinking",
+        action=argparse.BooleanOptionalAction,
+        default=DEFAULT_THINKING,
+        help="Enable ACE-Step thinking/reasoning and COT caption conditioning (default: disabled)",
+    )
     parser.add_argument("--clean", action="store_true", help="Wipe old clips and reports before generating")
     parser.add_argument(
         "--resume",
@@ -516,7 +632,10 @@ def main() -> None:
 
     shuffled_prompts = prompt_pack.copy()
     random.shuffle(shuffled_prompts)
-    prompts = [shuffled_prompts[index % len(shuffled_prompts)] for index in range(num_tracks)]
+    if num_tracks <= len(shuffled_prompts):
+        prompts = shuffled_prompts[:num_tracks]
+    else:
+        prompts = [shuffled_prompts[index % len(shuffled_prompts)] for index in range(num_tracks)]
 
     print("")
     print(EQ_LINE)
@@ -571,10 +690,11 @@ def main() -> None:
         track_reports.append(
             {
                 "track_number": track_index + 1,
-                "prompt": prompt,
+                "prompt": selected["prompt"],
                 "selected_candidate": {
                     "candidate_index": selected["candidate_index"],
                     "seed": selected["seed"],
+                    "prompt": selected["prompt"],
                     "audio_path": str(selected["audio_path"]),
                     "stats": selected["stats"],
                 },
@@ -582,6 +702,7 @@ def main() -> None:
                     {
                         "candidate_index": candidate["candidate_index"],
                         "seed": candidate["seed"],
+                        "prompt": candidate["prompt"],
                         "audio_path": str(candidate["audio_path"]),
                         "stats": candidate["stats"],
                         "reused": candidate["reused"],
