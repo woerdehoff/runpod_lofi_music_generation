@@ -306,40 +306,35 @@ echo ""
 echo -e "${BOLD}🎧 Quick test (1 track, 2 min, focus_room):${NC}"
 echo ""
 echo -e "  ${GREEN}python /workspace/generate.py \\
-    --tracks 1 \\
-    --duration 120 \\
+    --test \\
     --prompt-pack focus_room \\
-    --steps 80 \\
-    --guidance 5.0 \\
-    --shift 1.9${NC}"
+    --clean${NC}"
 echo ""
 
-echo -e "${BOLD}🎶 Full album (12 tracks, 10 min each → ~2 hour mix):${NC}"
+echo -e "${BOLD}🎶 Full album (10 tracks, 3 min each, 3 candidates):${NC}"
 echo ""
 echo -e "  ${GREEN}python /workspace/generate.py \\
-    --tracks 12 \\
-    --duration 600 \\
+    --tracks 10 \\
+    --duration 180 \\
     --prompt-pack quality_rotate \\
-    --steps 80 \\
-    --guidance 5.0 \\
-    --shift 1.85${NC}"
+    --candidates 3 \\
+    --clean${NC}"
 echo ""
 
 echo -e "${BOLD}📂 Available prompt packs:${NC}"
-echo "    diverse_lofi       — mixed lofi styles"
+echo "    gold_standard_lofi — strongest default beat-tape style"
+echo "    clean_lofi_hiphop  — balanced and production-safe"
 echo "    focus_room         — ultra clean study beats"
-echo "    traditional_adlibs — classic lofi hip hop"
+echo "    dusty_jazz_cafe    — warmer jazz-cafe mood"
+echo "    rainy_tape         — softer tape-haze mood"
 echo "    quality_rotate     — curated rotation of styles"
 echo ""
 
 echo -e "${BOLD}⚡ Safe defaults reminder:${NC}"
-echo "    --steps 80"
-echo "    --guidance 5.0"
-echo "    --shift 1.8–1.9"
-echo "    Clip duration ≤ 600s"
+echo "    --steps 96"
+echo "    --guidance 4.5"
+echo "    --shift 1.55"
+echo "    Default candidates: 3 (2 in --test)"
+echo "    Clip duration <= 480s"
 echo ""
 echo -e "${CYAN}Happy generating! 🎵${NC}"
-
-apt-get update && apt-get install -y ffmpeg
-
-python -m pip install -U tqdm

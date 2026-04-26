@@ -2,73 +2,73 @@
 """
 prompts.py
 ==========
-High-quality prompt packs for ACE-Step lofi generation.
-Optimized for:
-- Musical structure (no chaos)
-- Warm analog feel (no MIDI)
-- Stable rhythm (no drift)
+Prompt packs tuned for better ACE-Step lofi output.
+
+The prompts are intentionally specific about groove, arrangement, texture,
+and what should be avoided so the model is less likely to drift into generic,
+over-bright, or overly dramatic music.
 """
 
-from typing import List, Dict
+from typing import Dict, List
 
-# ── Balanced texture system (NOT too clean, NOT too chaotic) ───────────────
-_TEXTURE_WARM = (
-    "warm analog saturation, soft tape compression, "
-    "natural velocity dynamics, round transients, "
-    "subtle pitch variation, slight tape character, "
-    "not perfectly clean digital audio"
+
+_FOUNDATION = (
+    "instrumental only, no vocals, no spoken word, no rap, no trap hats, "
+    "no EDM risers, no dramatic drops, no abrupt section changes"
 )
 
-_TEXTURE_ROOM = (
-    "intimate room reverb, close-miked instrument tones, "
-    "subtle stereo width"
+_GROOVE = (
+    "steady pocket, soft swing, stable rhythmic grid, natural timing, "
+    "loop-friendly structure, relaxed repetition"
 )
 
-_RHYTHM_LOCK = (
-    "stable rhythmic grid, tight pocket, drums locked to tempo, "
-    "consistent timing with slight natural feel, no drift"
+_TEXTURE = (
+    "warm analog saturation, soft tape compression, slightly muted highs, "
+    "round transients, subtle room ambience, gentle stereo width"
 )
 
-# ── Prompt Packs ───────────────────────────────────────────────────────────
+_ARRANGEMENT = (
+    "simple repeating progression, restrained melodic movement, clean intro, "
+    "consistent middle section, gentle outro"
+)
+
+
 PROMPT_PACKS: Dict[str, List[str]] = {
-
-    # ✅ MAIN PACK — Use this for production
+    "gold_standard_lofi": [
+        f"classic lofi hip hop instrumental, 78 BPM, dusty boom bap drums, sampled jazz piano chords, warm sub bass, cassette bloom, barely audible vinyl texture, intimate late-night mood, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"nostalgic beat tape lofi, 82 BPM, chopped soul harmony, soft kick and snare, mellow bassline, tape wobble, worn sample edges, cozy apartment ambience, understated melodic phrasing, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"underground lofi instrumental, 76 BPM, dusty MPC-style drums, mellow electric piano voicings, round bass, soft clipping on peaks, muted cymbals, raw but musical beat-tape character, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+    ],
     "clean_lofi_hiphop": [
-        f"lofi hip hop instrumental, 78 BPM, warm Rhodes chords, boom bap drums with soft swing, deep steady bassline, simple repeating chord progression, smooth groove, melodic but minimal, clear structure, no randomness, no chaotic changes, {_TEXTURE_WARM}, {_TEXTURE_ROOM}, {_RHYTHM_LOCK}, no bright highs",
-
-        f"chillhop instrumental, 80 BPM, electric piano chords, tight drum groove, warm bass, simple loop-based structure, consistent progression, calm and musical, smooth transitions, {_TEXTURE_WARM}, {_TEXTURE_ROOM}, {_RHYTHM_LOCK}",
-
-        f"classic lofi beat, 76 BPM, piano chord loop, boom bap drums, warm bass, repetitive structure, simple melody, relaxed groove, balanced mix, slightly softened highs, {_TEXTURE_WARM}, {_RHYTHM_LOCK}, not overly processed"
+        f"clean lofi hip hop instrumental, 80 BPM, warm Rhodes chords, gentle boom bap drums, deep supportive bass, minimal top line, focused study mood, polished but not glossy, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"chillhop instrumental, 78 BPM, electric piano loop, brushed snare texture, warm bass movement, smooth harmonic repetition, calm and unobtrusive atmosphere, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"mellow lofi beat, 74 BPM, piano chord motif, laid-back drums, soft sub bass, slightly softened high end, stable arrangement with no surprises, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
     ],
-
-    # ── Gold Standard Lofi ────────────────────────────────────────────────────
-"gold_standard_lofi": [
-    "classic lofi hip hop instrumental, 78 BPM, dusty boom bap drums with soft swing, sampled jazz piano chords with tape saturation and slight pitch wobble, warm sub bass with subtle movement, cassette texture, vinyl crackle very low in the background, analog warmth, degraded tape tone, natural velocity variation, slightly imperfect note articulation, intimate room ambience, stable rhythmic grid, tight pocket, no timing drift, feels like a recorded beat tape, not digitally sequenced, no bright highs, no clean digital sound",
-
-    "nostalgic lofi beat tape, 82 BPM, chopped soul sample with worn tape character, boom bap drums with soft transients and light swing, deep warm bass, analog compression, subtle wow and flutter, low fidelity texture, slightly degraded highs, organic feel, not digitally clean, stable timing, no drift",
-
-    "underground lofi hip hop, 76 BPM, dusty MPC style drums, vinyl sampled chords with gentle noise and tape warmth, mellow bassline, soft clipping on peaks, cassette saturation, muted highs, warm low mids, small timing imperfections but locked tempo, raw beat tape character, not polished, not synthetic"
-    ],
-
-    # ✅ Slightly dirtier version but still controlled
-    "traditional_adlibs": [
-        f"classic lofi hip hop, 85 BPM, dusty boom bap drums, vinyl texture low in mix, sampled jazz chords with warmth, deep bass, subtle vocal chops low volume, {_TEXTURE_WARM}, {_TEXTURE_ROOM}, {_RHYTHM_LOCK}, no lyrics",
-
-        f"old school chillhop, 80 BPM, MPC-style drums with soft swing, warm Rhodes loop, analog-style compression, mellow bass, subtle texture noise, {_TEXTURE_WARM}, {_RHYTHM_LOCK}, not digital sounding"
-    ],
-
-    # ✅ Clean focus (safest, most stable)
     "focus_room": [
-        f"focus lofi beat, 78 BPM, soft Rhodes chords, tight drum groove, warm bass, minimal arrangement, calm and consistent, clean structure, {_TEXTURE_WARM}, {_TEXTURE_ROOM}, {_RHYTHM_LOCK}, unobtrusive",
-
-        f"coding lofi, 80 BPM, electric piano loop, steady drums, supportive bassline, repetitive and relaxed, no sudden changes, {_TEXTURE_WARM}, {_RHYTHM_LOCK}, smooth and focused"
+        f"study lofi instrumental, 72 BPM, soft Rhodes, gentle kick-snare groove, warm bass pad, highly repetitive arrangement, no flashy fills, unobtrusive concentration mood, {_GROOVE}, {_TEXTURE}, {_FOUNDATION}",
+        f"coding lofi, 76 BPM, electric piano loop, soft drum machine groove, supportive bassline, quiet room tone, very stable energy, minimal melodic variation, {_GROOVE}, {_TEXTURE}, {_FOUNDATION}",
+        f"deep focus chillhop, 80 BPM, muted piano voicings, light boom bap drums, smooth bass anchor, minimal arrangement for long listening, {_GROOVE}, {_TEXTURE}, {_FOUNDATION}",
+    ],
+    "dusty_jazz_cafe": [
+        f"jazzy lofi instrumental, 82 BPM, brushed boom bap drums, smoky electric piano, upright-style bass feel, dim cafe ambience, soft tape flutter, cozy rain-on-window atmosphere, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"late-night cafe lofi, 78 BPM, jazz guitar chords, warm bass, dusty snare, intimate room reflections, understated melody, subtle noir mood, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"vinyl jazzhop instrumental, 84 BPM, piano comping, soft swing drums, mellow bass pocket, worn-record texture, relaxed and tasteful phrasing, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+    ],
+    "rainy_tape": [
+        f"rainy-day lofi instrumental, 70 BPM, warm piano chords, soft boom bap groove, deep bass, blurred tape haze, distant rain texture, reflective and calm, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"sleepy cassette lofi, 74 BPM, electric piano, soft kick, brushed snare, mellow bass, gentle wow and flutter, muted highs, dreamy but rhythmically steady, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"night-rain chillhop instrumental, 78 BPM, Rhodes motif, dusty drums, round bass, washed ambience, repetitive and soothing structure, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+    ],
+    "quality_rotate": [
+        f"classic lofi hip hop instrumental, 78 BPM, dusty boom bap drums, sampled jazz piano, warm sub bass, beat-tape feel, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"focus lofi instrumental, 76 BPM, soft Rhodes, minimal drum pocket, supportive bass, unobtrusive study energy, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"jazzy cafe chillhop instrumental, 82 BPM, guitar or Rhodes chords, brushed drums, warm bass, intimate room tone, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
+        f"rain-soaked lofi instrumental, 72 BPM, mellow piano, soft drums, deep bass, blurred tape mood, {_GROOVE}, {_TEXTURE}, {_ARRANGEMENT}, {_FOUNDATION}",
     ],
 }
 
 
-# ── Helpers ────────────────────────────────────────────────────────────────
-def get_prompt_pack(name: str = "clean_lofi_hiphop") -> List[str]:
-    """Return a named prompt pack."""
+def get_prompt_pack(name: str = "gold_standard_lofi") -> List[str]:
     if name not in PROMPT_PACKS:
         valid = ", ".join(sorted(PROMPT_PACKS.keys()))
         raise ValueError(f"Unknown prompt pack '{name}'. Valid options: {valid}")
@@ -76,5 +76,4 @@ def get_prompt_pack(name: str = "clean_lofi_hiphop") -> List[str]:
 
 
 def list_prompt_packs() -> List[str]:
-    """Return available prompt pack names."""
     return sorted(PROMPT_PACKS.keys())
